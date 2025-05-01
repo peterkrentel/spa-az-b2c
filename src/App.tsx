@@ -4,31 +4,39 @@ import { AuthProvider } from './components/AuthProvider';
 import { LoginButton } from './components/LoginButton';
 import './App.css';
 
-function App() {
+function AppContent() {
   const { instance } = useMsal();
 
   const handleLogout = () => {
-    instance.logoutRedirect();
+    instance.logoutRedirect().catch(error => {
+      console.error("Logout failed:", error);
+    });
   };
 
   return (
+    <Router>
+      <div className="App">
+        <header className="App-header">
+          <h1>Azure B2C SPA</h1>
+          <UnauthenticatedTemplate>
+            <LoginButton />
+          </UnauthenticatedTemplate>
+          <AuthenticatedTemplate>
+            <div>
+              <p>You are signed in!</p>
+              <button onClick={handleLogout}>Sign Out</button>
+            </div>
+          </AuthenticatedTemplate>
+        </header>
+      </div>
+    </Router>
+  );
+}
+
+function App() {
+  return (
     <AuthProvider>
-      <Router>
-        <div className="App">
-          <header className="App-header">
-            <h1>Azure B2C SPA</h1>
-            <UnauthenticatedTemplate>
-              <LoginButton />
-            </UnauthenticatedTemplate>
-            <AuthenticatedTemplate>
-              <div>
-                <p>You are signed in!</p>
-                <button onClick={handleLogout}>Sign Out</button>
-              </div>
-            </AuthenticatedTemplate>
-          </header>
-        </div>
-      </Router>
+      <AppContent />
     </AuthProvider>
   );
 }

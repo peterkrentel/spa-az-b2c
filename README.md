@@ -9,6 +9,7 @@ A React Single Page Application (SPA) demonstrating Azure B2C authentication int
 - MSAL (Microsoft Authentication Library) for authentication
 - Protected routes
 - Modern UI with responsive design
+- Environment variable configuration
 
 ## Prerequisites
 
@@ -30,37 +31,35 @@ A React Single Page Application (SPA) demonstrating Azure B2C authentication int
    npm install
    ```
 
-3. Configure Azure B2C:
+3. Configure environment variables:
+   Create a `.env` file in the root directory with the following variables:
+   ```env
+   VITE_AZURE_B2C_CLIENT_ID=your-client-id
+   VITE_AZURE_B2C_TENANT_NAME=your-tenant-name
+   VITE_AZURE_B2C_USER_FLOW=your-user-flow
+   VITE_AZURE_B2C_REDIRECT_URI=http://localhost:5173
+   ```
+
+4. Configure Azure B2C:
    - Create an Azure B2C tenant if you don't have one
    - Register a new application in Azure B2C
    - Configure the application as a Single Page Application (SPA)
    - Create a user flow for sign-up and sign-in
-   - Update the configuration in `src/config/authConfig.ts` with your Azure B2C details:
-     - `clientId`
-     - `authority`
-     - `knownAuthorities`
+   - Update the environment variables with your Azure B2C details
 
-4. Start the development server:
+5. Start the development server:
    ```bash
    npm run dev
    ```
 
-## Configuration
+## Environment Variables
 
-Update the following in `src/config/authConfig.ts`:
-
-```typescript
-export const msalConfig: Configuration = {
-    auth: {
-        clientId: "your-client-id",
-        authority: "https://your-tenant.b2clogin.com/your-tenant.onmicrosoft.com/your-user-flow",
-        knownAuthorities: ["your-tenant.b2clogin.com"],
-        redirectUri: "http://localhost:5173",
-        postLogoutRedirectUri: "http://localhost:5173"
-    },
-    // ... other configuration
-};
-```
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `VITE_AZURE_B2C_CLIENT_ID` | Your Azure B2C application client ID | Yes |
+| `VITE_AZURE_B2C_TENANT_NAME` | Your Azure B2C tenant name | Yes |
+| `VITE_AZURE_B2C_USER_FLOW` | The name of your user flow | Yes |
+| `VITE_AZURE_B2C_REDIRECT_URI` | The redirect URI for authentication | No (defaults to http://localhost:5173) |
 
 ## Available Scripts
 
@@ -85,6 +84,7 @@ src/
 - Use environment variables for configuration
 - Keep dependencies updated
 - Follow Azure B2C security best practices
+- Never commit your `.env` file to version control
 
 ## License
 

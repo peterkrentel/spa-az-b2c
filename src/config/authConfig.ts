@@ -1,14 +1,25 @@
 import { Configuration, PopupRequest } from "@azure/msal-browser";
 
+// Get environment variables
+const clientId = import.meta.env.VITE_AZURE_B2C_CLIENT_ID;
+const tenantName = import.meta.env.VITE_AZURE_B2C_TENANT_NAME;
+const userFlow = import.meta.env.VITE_AZURE_B2C_USER_FLOW;
+const redirectUri = import.meta.env.VITE_AZURE_B2C_REDIRECT_URI || "http://localhost:5173";
+
+// Validate required environment variables
+if (!clientId || !tenantName || !userFlow) {
+    throw new Error("Missing required Azure B2C environment variables. Please check your .env file.");
+}
+
 // Azure B2C configuration
 export const msalConfig: Configuration = {
     auth: {
-        clientId: "a60ab1f6-ac72-4293-aad5-e138ef137c62",
-        authority: "https://B2CDemov1.b2clogin.com/B2CDemov1.onmicrosoft.com/B2C_1_signupsignin1",
-        knownAuthorities: ["B2CDemov1.b2clogin.com"],
-        redirectUri: "http://localhost:5173",
+        clientId,
+        authority: `https://${tenantName}.b2clogin.com/${tenantName}.onmicrosoft.com/${userFlow}`,
+        knownAuthorities: [`${tenantName}.b2clogin.com`],
+        redirectUri,
         navigateToLoginRequestUrl: true,
-        postLogoutRedirectUri: "http://localhost:5173"
+        postLogoutRedirectUri: redirectUri
     },
     cache: {
         cacheLocation: "sessionStorage",

@@ -29,6 +29,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                         if (event.error instanceof InteractionRequiredAuthError) {
                             console.error("Interaction required:", event.error);
                         }
+                    } else if (event.eventType === EventType.LOGOUT_SUCCESS) {
+                        console.log("Logout successful:", event);
+                    } else if (event.eventType === EventType.LOGOUT_FAILURE) {
+                        console.error("Logout failed:", event);
                     }
                 });
 
